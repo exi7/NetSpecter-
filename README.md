@@ -34,7 +34,7 @@ This project is intended strictly for educational and personal use. Unauthorized
 ### Installation Steps
 1. Clone the repository:
 ```bash
- git clone https://github.com/exi7/Exit-Folder.git
+ git clone https://github.com/exi7/NetSpecter-.git
 ```
 2. Install dependencies:
 ```bash
