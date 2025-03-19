@@ -1,7 +1,7 @@
 # **NetSpecter - Remote Control Bot (V1.0)**
 
 <p align="center">
-  <img src="https://media-hosting.imagekit.io//39b5f3c76735404a/Capture%20d%E2%80%99%C3%A9cran%202025-03-19%20091944.png?Expires=1836980599&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=CnKYx1q-cUmyKZGjHX4nxp4GDzM5XFBa0ZIlDehg2Tv1IdvEcCU3kvZJVJqAucHFlbZFkEKK0YrxNxUwVwvzAOVbwg5cPUnt~AyWO7HMVWJozomP-xkXvA9Q~zXIuP-6UCqptv~0tsXLgPvTWwCvfPwYNPIByTa2SE5fCP-aOWPkW7ulBQYIPThn7MA6Osfo2Icyc507c2syQNpWWyOJqFfA8IGRfxs0r15sMCq0Md6ynWEpTMxi4mZy5wovvy1qM-CTRu0PMqUk1vA1HdtAL-cleAMcohZD8y8T-~cP64QH-NB8FEhR3fd2QFTSxjzYJ~dDvHSZiSHRUxD3ah~5Cw__">
+  <img src="https://cdn.discordapp.com/attachments/1345789805648416860/1352057960691535944/IMG_1189.jpg?ex=67dca199&is=67db5019&hm=a1f44e840fe7ef3df95fa95cabff1a380155d8a6a042cac7756478fa63827713&">
 </p>
 
 ## 📖 Project Description
