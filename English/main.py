@@ -18,13 +18,13 @@ from scapy.all import sniff
 import pyttsx3
 import webbrowser
 import tkinter as tk
-from tkinter import messagebox  # ✅ CORRECT IMPORT
+from tkinter import messagebox 
 from threading import Thread
 import win32api
 import win32con
 import time
 import mss
-from screeninfo import get_monitors  # Used to detect screens
+from screeninfo import get_monitors  
 import ctypes
 import threading
 from pydub import AudioSegment
